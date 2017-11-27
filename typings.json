@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "flux/utils/index": "registry:dt/flux/utils/index#3.0.0+20170110143419"
+  }
+}
