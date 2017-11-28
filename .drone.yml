@@ -1,8 +1,8 @@
 pipeline:
-#  docker:
-#    image: plugins/docker
-#    repo: https://${GH_TOKEN}@github.com/okapie/okapie.github.io
-#    secrets: [ gh_token ]
+  docker:
+    image: plugins/docker
+    repo: https://${GH_TOKEN}@github.com/okapie/okapie.github.io
+    secrets: [ gh_token ]
   restore-cache:
     image: drillster/drone-volume-cache
     restore: true
@@ -10,52 +10,52 @@ pipeline:
       - ./node_modules
     volumes:
       - /tmp/cache:/cache
-    # when:
+    when:
       # event: [push, pull_request, tag]
-      # event: [push, pull_request]
-#  ssh:
-#    image: plugins/ssh
-#    user: okapie
-#    host: ${DRONE_HOST}
-#    port: 8080:8000
-#    secrets: [ ssh_key ]
+      event: [push, pull_request]
+  ssh:
+    image: plugins/ssh
+    user: okapie
+    host: ${DRONE_HOST}
+    port: 8080:8000
+    secrets: [ ssh_key ]
   build:
     image: node:7.10.0
     commands:
       - npm install --silent
       - npm run lint --silent
-    # secrets: [ ssh_key ]
-    # when:
-      # branch: master
-      # event: [push, pull_request]
-#  publish:
-#    image: plugins/gh-pages
-#    secrets: [ gh_token, ssh_key ]
-#    registry: https://github.com
-#    repo: https://${GH_TOKEN}@github.com/okapie/okapie.github.io
-#     source: src
-#     files: src/*
-#    remote: okapie/okapie.github.io
-#    target: gh_token
-#    commands:
-#      - ./docs.sh
-#    when:
-#      # branch: [master, feature/test]
-#      # branch: master
-#      # branch: gh-pages
-#      # environment: master
-#      # event: [push, tag, deployment]
-#      local: true
-#  rebuild-cache:
-#    image: drillster/drone-volume-cache
-#    rebuild: true
-#    mount:
-#      - ./node_modules
-#    volumes:
-#      - /tmp/cache:/cache
-    # when:
-      # event: [push, pull_request, tag]
-      # event: [push, pull_request]
+    secrets: [ ssh_key ]
+    when:
+      branch: master
+      event: [push, pull_request]
+  publish:
+    image: plugins/gh-pages
+    secrets: [ gh_token, ssh_key ]
+    registry: https://github.com
+    repo: https://${GH_TOKEN}@github.com/okapie/okapie.github.io
+     source: src
+     files: src/*
+    remote: okapie/okapie.github.io
+    target: gh_token
+    commands:
+      - ./docs.sh
+    when:
+      # branch: [master, feature/test]
+      branch: master
+      # branch: gh-pages
+      environment: master
+      event: [push, tag, deployment]
+      local: true
+  rebuild-cache:
+    image: drillster/drone-volume-cache
+    rebuild: true
+    mount:
+      - ./node_modules
+    volumes:
+      - /tmp/cache:/cache
+     when:
+       event: [push, pull_request, tag]
+       event: [push, pull_request]
   notify:
     image: plugins/slack
     # secrets: [ secret_token ]
