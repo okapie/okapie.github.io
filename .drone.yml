@@ -1,8 +1,14 @@
 pipeline:
   docker:
-    image: plugins/docker
-    repo: https://${GH_TOKEN}@github.com/okapie/okapie.github.io
+    image: plugins/docker:latest
     secrets: [ gh_token ]
+    environment:
+      # - DOCKER_LAUNCH_DEBUG=true # Set "true" during "drone exec". (If false, an error occurs.)
+    # repo: https://${GH_TOKEN}@github.com/okapie/okapie.github.io
+    repo: okapie/okapie.github.io
+    # debug: true # Set "true" during "drone exec". (If false, an error occurs.)
+    when:
+      branch: master
   restore-cache:
     image: drillster/drone-volume-cache
     restore: true
@@ -11,8 +17,7 @@ pipeline:
     volumes:
       - /tmp/cache:/cache
     when:
-      # event: [push, pull_request, tag]
-      event: [push, pull_request]
+      event: [push, pull_request, tag]
   ssh:
     image: plugins/ssh
     user: okapie
@@ -40,9 +45,7 @@ pipeline:
     commands:
       - ./docs.sh
     when:
-      # branch: [master, feature/test]
       branch: master
-      # branch: gh-pages
       environment: master
       event: [push, tag, deployment]
       local: true
@@ -53,12 +56,11 @@ pipeline:
       - ./node_modules
     volumes:
       - /tmp/cache:/cache
-     when:
-       event: [push, pull_request, tag]
-       event: [push, pull_request]
+    when:
+      event: [push, pull_request, tag]
   notify:
     image: plugins/slack
-    # secrets: [ secret_token ]
+    secrets: [ secret_token ]
     secret: $$SECRET_TOKEN
     webhook: web_hook
     channel: notification
