@@ -66,9 +66,15 @@ pipeline:
     channel: notification
     username: okapie
     icon_emoji: ":sushi:"
+#    template: >
+#      <!channel>
+#      *{{build.status}}*
+#      <{{build.link}}|{{repo.owner}}/{{repo.name}}> ({{build.branch}}) from {{build.author}}
     template: >
-      <!channel>
-      *{{build.status}}*
-      <{{build.link}}|{{repo.owner}}/{{repo.name}}> ({{build.branch}}) from {{build.author}}
+      {{#success build.status}}
+        build {{build.number}} succeeded. Good job.
+      {{else}}
+        build {{build.number}} failed. Fix me please.
+      {{/success}}
     when:
       status: [ success, failure ]
