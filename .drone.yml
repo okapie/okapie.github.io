@@ -62,7 +62,7 @@ pipeline:
     image: plugins/slack
     secrets: [ secret_token ]
     secret: $$SECRET_TOKEN
-    webhook: web_hook
+    webhook: ${SLACK_WEBHOOK}
     channel: notification
     username: okapie
     icon_emoji: ":sushi:"
