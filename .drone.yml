@@ -60,11 +60,13 @@ pipeline:
       event: [push, pull_request, tag]
   notify:
     image: plugins/slack
-    secrets: [ secret_token ]
-    secret: $$SECRET_TOKEN
-    webhook: ${SLACK_WEBHOOK}
-    channel: notification
-    username: okapie
+    # secrets: [ secret_token ]
+    # secret: $$SECRET_TOKEN
+    # webhook: ${SLACK_WEBHOOK}
+    webhook: "https://hooks.slack.com/services/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"
+    channel: "#notification"
+    # username: okapie
+    username: "drone"
     icon_emoji: ":sushi:"
 #    template: >
 #      <!channel>
@@ -77,4 +79,5 @@ pipeline:
         build {{build.number}} failed. Fix me please.
       {{/success}}
     when:
-      status: [ success, failure ]
+      # status: [ success, failure ]
+      event: pull_request
