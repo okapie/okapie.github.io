@@ -60,7 +60,7 @@ pipeline:
       event: [push, pull_request, tag]
   notify:
     image: plugins/slack
-    # secrets: [ secret_token ]
+    secrets: [ secret_token ]
     # secret: $$SECRET_TOKEN
     # webhook: ${SLACK_WEBHOOK}
     webhook: "https://hooks.slack.com/services/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"
