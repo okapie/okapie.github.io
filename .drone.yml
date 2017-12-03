@@ -1,4 +1,13 @@
 pipeline:
+  env_file: ./.env
+  environment:
+    - GH_TOKEN
+    - SSH_KEY
+    - GIN_MODE
+    - SLACK_WEBHOOK
+    - DOCKER_USERNAME
+    - DOCKER_PASSWORD
+    - DOCKER_EMAIL
   docker:
     image: plugins/docker:latest
     secrets: [ gh_token ]
