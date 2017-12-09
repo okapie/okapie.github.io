@@ -69,24 +69,24 @@ pipeline:
       event: [push, pull_request, tag]
   notify:
     image: plugins/slack
-    secrets: [ secret_token ]
+    # secrets: [ secret_token ]
     # secret: $$SECRET_TOKEN
     # webhook: ${SLACK_WEBHOOK}
     webhook: "https://hooks.slack.com/services/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"
     channel: "#notification"
     # username: okapie
-    username: "drone"
+    username: "drone-ci"
     icon_emoji: ":sushi:"
 #    template: >
 #      <!channel>
 #      *{{build.status}}*
 #      <{{build.link}}|{{repo.owner}}/{{repo.name}}> ({{build.branch}}) from {{build.author}}
-    template: >
-      {{#success build.status}}
-        build {{build.number}} succeeded. Good job.
-      {{else}}
-        build {{build.number}} failed. Fix me please.
-      {{/success}}
-    when:
-      # status: [ success, failure ]
-      event: pull_request
+#    template: >
+#      {{#success build.status}}
+#        build {{build.number}} succeeded. Good job.
+#      {{else}}
+#        build {{build.number}} failed. Fix me please.
+#      {{/success}}
+#    when:
+#      # status: [ success, failure ]
+#      event: pull_request
