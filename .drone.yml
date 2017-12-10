@@ -87,6 +87,6 @@ pipeline:
 #      {{else}}
 #        build {{build.number}} failed. Fix me please.
 #      {{/success}}
-#    when:
-#      # status: [ success, failure ]
-#      event: pull_request
+    when:
+      event: [ push, tag, deployment, pull_request ]
+      status: [ success, failure ]
